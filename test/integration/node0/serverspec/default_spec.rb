@@ -35,6 +35,11 @@ describe command("/usr/local/bin/kong version") do
   its(:stdout) { should match %r(Kong version: 0.*)i }
 end
 
+describe service('kong') do
+  it { should be_enabled }
+  it { should be_running }
+end
+
 describe process("serf") do
   it { should be_running }
   its(:args) { should match %r(agent -profile=wan -rpc-addr=.*:kong=/usr/local/kong/serf_event.sh) }
