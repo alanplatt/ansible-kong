@@ -16,7 +16,7 @@
   pre_tasks:
     - name: Set cassandra listen address | RedHat
       set_fact: cassandra_listen_address="{{ ansible_enp0s8.ipv4.address }}"
-      when: ansible_os_family|lower == 'redhat'
+      when: ansible_os_family|lower == 'redhat' and ansible_enp0s8 is defined
 
   roles:
     - wunzeco.java
@@ -24,11 +24,11 @@
 
   post_tasks:
     - name: Wait for cassandra to start fully | Debian
-      wait_for: host="{{ ansible_eth1.ipv4.address }}" port=9042
+      wait_for: host="{{ cassandra_listen_address }}" port=9042
       when: ansible_os_family|lower == 'debian'
 
     - name: Wait for cassandra to start fully | RedHat
-      wait_for: host="{{ ansible_enp0s8.ipv4.address }}" port=9042
+      wait_for: host="{{ cassandra_listen_address }}" port=9042
       when: ansible_os_family|lower == 'redhat'
 
 
@@ -49,7 +49,7 @@
   pre_tasks:
     - name: Set kong host | RedHat
       set_fact: kong_host="{{ ansible_enp0s8.ipv4.address }}"
-      when: ansible_os_family|lower == 'redhat'
+      when: ansible_os_family|lower == 'redhat' and ansible_enp0s8 is defined
 
   roles:
     - ansible-kong
