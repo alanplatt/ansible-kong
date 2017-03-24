@@ -1,6 +1,4 @@
 ---
 
 - name: Restart kong
-  shell: ulimit -n "{{ kong_max_files_limit }}" && kong restart
-  environment:
-    PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+  service: name=kong state=restarted

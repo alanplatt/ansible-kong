@@ -1,0 +1,12 @@
+[Unit]
+Description=Kong
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/rm -fv /usr/local/kong/*.pid
+ExecStart=/usr/local/bin/kong start
+ExecStop=/usr/local/bin/kong stop
+
+[Install]
+WantedBy=multi-user.target
